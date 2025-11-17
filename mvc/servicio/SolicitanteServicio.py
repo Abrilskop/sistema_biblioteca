@@ -11,5 +11,5 @@ class SolicitanteServicio:
             for (id_sol, nombre, pat, mat) in resultado.fetchall():
                 solicitantes.append(CSolicitante(id_sol, nombre, pat, mat))
         cursor.close()
-        conexion.close()
+        
         return solicitantes

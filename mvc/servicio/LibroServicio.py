@@ -11,5 +11,4 @@ class LibroServicio:
             for (isbn, titulo) in resultado.fetchall():
                 libros.append(CLibro(isbn, titulo))
         cursor.close()
-        conexion.close()
         return libros

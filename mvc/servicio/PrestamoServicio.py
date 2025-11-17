@@ -15,7 +15,6 @@ class PrestamoServicio:
         result_args = cursor.callproc("sp_registrar_prestamo", args)
         conexion.commit()
         cursor.close()
-        conexion.close()
         return result_args[4]
 
     def registrar_devolucion(self, id_prestamo):
@@ -25,7 +24,6 @@ class PrestamoServicio:
         cursor.callproc("sp_devolver_prestamo", (id_prestamo, fecha_hoy))
         conexion.commit()
         cursor.close()
-        conexion.close()
 
     def listar_prestamos(self, solo_pendientes=True):
         conexion = obtener_conexion()
@@ -42,5 +40,4 @@ class PrestamoServicio:
                 prestamo = CPrestamo(id_p, ejemplar, solicitante, f_pres, f_prev, f_real)
                 prestamos.append(prestamo)
         cursor.close()
-        conexion.close()
         return prestamos

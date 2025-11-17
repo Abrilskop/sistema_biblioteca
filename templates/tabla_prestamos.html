@@ -1,0 +1,34 @@
+<h2>Préstamos Activos (Pendientes de Devolución)</h2>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID Préstamo</th>
+            <th>ID Ejemplar</th>
+            <th>Solicitante</th>
+            <th>Fecha Préstamo</th>
+            <th>Devolución Prevista</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in prestamos %}
+        <tr>
+            <td>{{ p.id_prestamo }}</td>
+            <td>{{ p.ejemplar.id_ejemplar }}</td>
+            <td>{{ p.solicitante.nombre_completo() }}</td>
+            <td>{{ p.fecha_prestamo.strftime('%Y-%m-%d') }}</td>
+            <td>{{ p.fecha_devolucion_prevista.strftime('%Y-%m-%d') }}</td>
+            <td style="text-align: center;">
+                <form action="{{ url_for('prestamo.gestionar_prestamos') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="id_prestamo" value="{{ p.id_prestamo }}">
+                    <button type="submit" name="devolver">Devolver</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align: center;">No hay préstamos activos.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,33 @@
+<h2>Ejemplares Registrados</h2>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID Ejemplar</th>
+            <th>Libro (Título)</th>
+            <th>Estado Actual</th>
+            <th>Cambiar Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ejemplar in ejemplares %}
+        <tr>
+            <td>{{ ejemplar.id_ejemplar }}</td>
+            <td>{{ ejemplar.libro.titulo }}</td>
+            <td>{{ ejemplar.estado }}</td>
+            <td>
+                <form action="{{ url_for('ejemplar.gestionar_ejemplares') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="id_ejemplar_estado" value="{{ ejemplar.id_ejemplar }}">
+                    <select name="nuevo_estado">
+                        {% for estado in estados %}
+                            {% if estado != ejemplar.estado %}
+                            <option value="{{ estado }}">{{ estado }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button type="submit" name="cambiar_estado">Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

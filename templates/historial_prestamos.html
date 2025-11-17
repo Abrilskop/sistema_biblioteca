@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Historial de Préstamos{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Historial Completo de Préstamos</h1>
+    <p>Aquí se muestran todos los préstamos registrados, tanto los activos como los ya devueltos.</p>
+    
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>ID Préstamo</th>
+                <th>ID Ejemplar</th>
+                <th>Solicitante</th>
+                <th>Fecha Préstamo</th>
+                <th>Dev. Prevista</th>
+                <th>Fecha Devolución</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prestamos %}
+            <tr>
+                <td>{{ p.id_prestamo }}</td>
+                <td>{{ p.ejemplar.id_ejemplar }}</td>
+                <td>{{ p.solicitante.nombre_completo() }}</td>
+                <td>{{ p.fecha_prestamo.strftime('%Y-%m-%d') }}</td>
+                <td>{{ p.fecha_devolucion_prevista.strftime('%Y-%m-%d') }}</td>
+                <td>{{ p.fecha_devolucion_real.strftime('%Y-%m-%d') if p.fecha_devolucion_real else '---' }}</td>
+                <td>
+                    {% if p.fecha_devolucion_real %}
+                        <span style="color: green; font-weight: bold;">Devuelto</span>
+                    {% else %}
+                        <span style="color: orange; font-weight: bold;">Activo</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center;">No hay ningún préstamo registrado en el sistema.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

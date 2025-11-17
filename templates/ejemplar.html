@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Ejemplares{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Registrar Nuevo Ejemplar</h2>
+    <form action="{{ url_for('ejemplar.registrar_ejemplar') }}" method="post">
+        <div class="form-group">
+            <label for="id_ejemplar">ID del Ejemplar (Ej: 'EJ-0005'):</label>
+            <input type="text" name="id_ejemplar" id="id_ejemplar" required>
+        </div>
+        <div class="form-group">
+            <label for="isbn">Libro:</label>
+            <select name="isbn" id="isbn" required>
+                <option value="">-- Seleccione un libro --</option>
+                {% for libro in libros %}
+                <option value="{{ libro.isbn }}">{{ libro.titulo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" name="registrar">Registrar Ejemplar</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Ejemplares Registrados</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>ID Ejemplar</th>
+                <th>Libro (Título)</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ejemplar in ejemplares %}
+            <tr>
+                <td>{{ ejemplar.id_ejemplar }}</td>
+                <td>{{ ejemplar.libro.titulo }}</td>
+                <td>{{ ejemplar.estado }}</td>
+                <td>
+                    <!-- Botón para Editar -->
+                    <a href="{{ url_for('ejemplar.editar_ejemplar', id_ejemplar=ejemplar.id_ejemplar) }}" style="margin-right: 10px;">Editar</a>
+                    
+                    <!-- Formulario para Eliminar -->
+                    <form action="{{ url_for('ejemplar.eliminar_ejemplar') }}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este ejemplar?');">
+                        <input type="hidden" name="id_ejemplar" value="{{ ejemplar.id_ejemplar }}">
+                        <button type="submit" class="btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">No hay ejemplares registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

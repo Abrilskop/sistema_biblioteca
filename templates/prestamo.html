@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Préstamos{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h1>Gestión de Préstamos</h1>
+        <a href="{{ url_for('prestamo.historial_prestamos') }}">Ver Historial Completo de Préstamos</a>
+        <h2>Registrar Nuevo Préstamo</h2>
+        <form action="{{ url_for('prestamo.gestionar_prestamos') }}" method="post">
+            <div class="form-group">
+                <label for="id_ejemplar">Ejemplar Disponible:</label>
+                <select name="id_ejemplar" id="id_ejemplar" required>
+                    <option value="">-- Seleccione un ejemplar --</option>
+                    {% for ejemplar in ejemplares %}
+                    <option value="{{ ejemplar.id_ejemplar }}">{{ ejemplar.id_ejemplar }} - {{ ejemplar.libro.titulo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_solicitante">Solicitante Activo:</label>
+                <select name="id_solicitante" id="id_solicitante" required>
+                    <option value="">-- Seleccione un solicitante --</option>
+                    {% for s in solicitantes %}
+                    <option value="{{ s.id_solicitante }}">{{ s.nombre_completo() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" name="registrar">Registrar Préstamo</button>
+        </form>
+    </div>
+
+    <div class="card">
+        {% include 'tabla_prestamos.html' %}
+    </div>
+{% endblock %}

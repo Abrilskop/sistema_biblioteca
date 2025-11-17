@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Ejemplar{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Editar Ejemplar: {{ ejemplar.id_ejemplar }}</h1>
+    
+    <form action="{{ url_for('ejemplar.editar_ejemplar', id_ejemplar=ejemplar.id_ejemplar) }}" method="post">
+        
+        <div class="form-group">
+            <label for="id_ejemplar_display">ID Ejemplar (No se puede cambiar)</label>
+            <input type="text" id="id_ejemplar_display" name="id_ejemplar_display" value="{{ ejemplar.id_ejemplar }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="isbn">Libro (ISBN):</label>
+            <select name="isbn" id="isbn" required>
+                {% for libro in libros %}
+                    <option value="{{ libro.isbn }}" {% if libro.isbn == ejemplar.libro.isbn %}selected{% endif %}>
+                        {{ libro.titulo }} ({{ libro.isbn }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select name="estado" id="estado" required>
+                {% for estado_op in estados %}
+                    <option value="{{ estado_op }}" {% if estado_op == ejemplar.estado %}selected{% endif %}>
+                        {{ estado_op }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Guardar Cambios</button>
+        <a href="{{ url_for('ejemplar.gestionar_ejemplares') }}" style="text-decoration: none; margin-left: 1rem;">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
